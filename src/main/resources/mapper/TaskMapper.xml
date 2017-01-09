@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wulin.dal.task.dao.TaskDAO">
+    <resultMap id="TaskMap" type="com.wulin.dal.task.entity.TaskDO">
+        <id property="id" column="id"/>
+        <result property="status" column="status"/>
+        <result property="taskContent" column="taskContent"/>
+        <result property="loopType" column="loopType"/>
+        <result property="runTimes" column="runTimes" />
+        <result property="mgroup" column="mgroup" />
+        <result property="projectName" column="projectName" />
+        <result property="loopRunTimes" column="loopRunTimes" />
+    </resultMap>
+
+    <delete id="deleteTaskByTaskId" parameterType="com.wulin.dal.task.entity.TaskDO">
+        DELETE FROM task WHERE id=#{id};
+    </delete>
+
+    <select id="findAllTasks" resultMap="TaskMap">
+        SELECT * FROM task;
+    </select>
+
+    <select id="findTaskByStatusAndGroupAndProjectName" resultMap="TaskMap" parameterType="com.wulin.dal.task.entity.TaskDO">
+        SELECT * FROM task WHERE status = #{status} and mgroup = #{mgroup} and projectName = #{projectName} limit 50;
+    </select>
+
+    <select id="findTaskById" resultMap="TaskMap" fetchSize="1" parameterType="java.lang.Long">
+        SELECT * FROM task WHERE id=#{id};
+    </select>
+
+    <select id="findVailedTaskByStatusAndGroupAndProjectAndRuntimes" resultMap="TaskMap" parameterType="com.wulin.dal.task.entity.TaskDO">
+        SELECT * FROM task WHERE status = #{status} and mgroup = #{mgroup} and projectName = #{projectName} AND runTimes > 0 limit 50;
+    </select>
+
+    <select id="findTaskByLoopTypeAndStatus" resultMap="TaskMap" parameterType="com.wulin.dal.task.entity.TaskDO">
+        SELECT * FROM task WHERE status = #{status} and loopType = #{loopType};
+    </select>
+
+    <select id="findTaskByLoopType" resultMap="TaskMap" parameterType="com.wulin.dal.task.entity.TaskDO">
+        SELECT * FROM task WHERE loopType = #{loopType};
+    </select>
+
+    <insert id="insertTask" parameterType="com.wulin.dal.task.entity.TaskDO" useGeneratedKeys="true" keyProperty="id">
+          <selectKey resultType="java.lang.Long" keyProperty="id">
+              SELECT LAST_INSERT_ID()
+          </selectKey>
+          INSERT INTO task (status,taskContent,loopType,runTimes,mgroup,projectName,loopRunTimes)
+          VALUES (#{status},#{taskContent},#{loopType},#{runTimes},#{mgroup},#{projectName},#{loopRunTimes});
+    </insert>
+
+    <update id="updateTaskById" parameterType="com.wulin.dal.task.entity.TaskDO">
+        UPDATE task
+        <trim prefix="set" suffixOverrides=",">
+            <if test="status!=-1">status=#{status},</if>
+            <if test="taskContent!=null">taskContent=#{taskContent},</if>
+            <if test="loopType!=100">loopType=#{loopType},</if>
+            <if test="runTimes!=-1">runTimes=#{runTimes},</if>
+            <if test="mgroup!=null">mgroup=#{mgroup},</if>
+            <if test="projectName!=null">projectName=#{projectName},</if>
+            <if test="loopRunTimes!=null">loopRunTimes=#{loopRunTimes},</if>
+        </trim>
+        WHERE id = #{id};
+    </update>
+
+    <update id="updateTaskByLoopType" parameterType="com.wulin.dal.task.entity.TaskDO">
+        UPDATE task
+        <trim prefix="set" suffixOverrides=",">
+            <if test="status!=null">status=#{status},</if>
+            <if test="taskContent!=null">taskContent=#{taskContent},</if>
+            <if test="loopType!=null">loopType=#{loopType},</if>
+            <if test="runTimes!=null">runTimes=#{runTimes},</if>
+            <if test="mgroup!=null">mgroup=#{mgroup},</if>
+            <if test="projectName!=null">projectName=#{projectName},</if>
+            <if test="loopRunTimes!=null">loopRunTimes=#{loopRunTimes},</if>
+        </trim>
+        WHERE loopType = #{loopType};
+    </update>
+</mapper>

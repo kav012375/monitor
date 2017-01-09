@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wulin.dal.taskInstance.dao.TaskInstanceDAO">
+    <resultMap id="TaskInstanceMap" type="com.wulin.dal.taskInstance.entity.TaskInstanceDO">
+        <id property="uid" column="uid"/>
+        <result property="taskId" column="task_id"/>
+        <result property="isFinish" column="is_finish" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtClosed" column="gmt_closed" />
+        <result property="isSuccess" column="is_success" />
+        <result property="content" column="content" />
+        <result property="ip" column="ip" />
+    </resultMap>
+
+    <select id="findTaskInstanceByUid" resultMap="TaskInstanceMap">
+        SELECT * FROM task_instance WHERE uid = #{uid};
+    </select>
+
+    <select id="countTaskInstanceByTaskId" resultType="java.lang.Long" parameterType="com.wulin.dal.dailyReport.dto.DailyRportQueryDTO">
+        <![CDATA[
+            SELECT COUNT(uid) FROM task_instance WHERE task_id = #{taskId} AND gmt_create < #{endTime};
+        ]]>
+    </select>
+
+    <delete id="deleteTaskInstanceByTimeStamp" parameterType="com.wulin.dal.dailyReport.dto.DailyRportQueryDTO">
+        <![CDATA[
+            DELETE FROM task_instance WHERE gmt_create < #{endTime};
+        ]]>
+    </delete>
+
+    <select id="findTaskIdListByTimeStamp" resultType="java.lang.Long" parameterType="com.wulin.dal.dailyReport.dto.DailyRportQueryDTO">
+        <![CDATA[
+            SELECT DISTINCT(task_id) FROM task_instance WHERE gmt_create < #{endTime};
+        ]]>
+    </select>
+
+    <insert id="insertTaskInstance" parameterType="com.wulin.dal.taskInstance.entity.TaskInstanceDO" useGeneratedKeys="true" keyProperty="uid">
+        <selectKey resultType="java.lang.Long" keyProperty="uid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO task_instance (task_id,is_finish,gmt_create,gmt_closed,is_success,content,ip)
+        VALUES (#{taskId},#{isFinish},#{gmtCreate},#{gmtClosed},#{isSuccess},#{content},#{ip});
+    </insert>
+
+    <update id="updateTaskInstanceByUid" parameterType="com.wulin.dal.taskInstance.entity.TaskInstanceDO">
+        UPDATE task_instance
+        <trim prefix="set" suffixOverrides=",">
+            <if test="taskId!=null">task_id=#{taskId},</if>
+            <if test="isFinish!=null">is_finish=#{isFinish},</if>
+            <if test="gmtCreate!=null">gmt_create=#{gmtCreate},</if>
+            <if test="gmtClosed!=null">gmt_closed=#{gmtClosed},</if>
+            <if test="isSuccess!=null">is_success=#{isSuccess},</if>
+            <if test="content!=null">content=#{content},</if>
+            <if test="ip!=null">ip=#{ip}</if>
+        </trim>
+        WHERE uid = #{uid};
+    </update>
+</mapper>

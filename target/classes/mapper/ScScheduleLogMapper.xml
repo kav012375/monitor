@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wulin.dal.scScheduleLog.dao.ScScheduleLogDAO">
+    <resultMap id="ScScheduleLogMap" type="com.wulin.dal.scScheduleLog.entity.ScScheduleLogDO">
+        <id property="id" column="id"/>
+        <result property="taskName" column="task_name"/>
+        <result property="scheduleTime" column="schedule_time"/>
+        <result property="costTime" column="time_cost" />
+    </resultMap>
+
+    <insert id="insertScScheduleTaskLog" parameterType="com.wulin.dal.scScheduleLog.entity.ScScheduleLogDO" useGeneratedKeys="true">
+        INSERT INTO sc_schedule_log (task_name,schedule_time,time_cost) VALUES (#{taskName},#{scheduleTime},#{costTime});
+    </insert>
+</mapper>

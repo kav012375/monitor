@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wulin.dal.Role.dao.RoleDAO">
+    <resultMap id="RoleMap" type="com.wulin.dal.Role.entity.RoleDO">
+        <id property="ROLE_ID" column="ROLE_ID" />
+        <result property="USER_ID" column="USER_ID" />
+        <result property="ROLE_NAME" column="ROLE_NAME" />
+        <result property="ROLE_PROFESSION" column="ROLE_PROFESSION" />
+        <result property="STR" column="STR" />
+        <result property="AGI" column="AGI" />
+        <result property="INT" column="INT" />
+        <result property="STA" column="STA" />
+        <result property="HP" column="HP" />
+        <result property="MP" column="MP" />
+        <result property="HIT" column="HIT" />
+        <result property="DOD" column="DOD" />
+        <result property="CRI" column="CRI" />
+        <result property="WRE" column="WRE" />
+        <result property="VAM" column="VAM" />
+        <result property="BLS" column="BLS" />
+    </resultMap>
+    <select id="checkIfHaveRoleViaUserAcct" parameterType="String" resultType="int">
+        <![CDATA[
+            SELECT COUNT(*)
+            FROM role,user
+            WHERE user.USER_ACCT = #{USER_ACCT}
+            AND role.USER_ID = user.USER_ID;
+        ]]>
+    </select>
+    <insert id="insertRoleDataInfo" parameterType="com.wulin.dal.Role.entity.RoleDO" useGeneratedKeys="true">
+        <![CDATA[
+          INSERT INTO role (USER_ID,ROLE_NAME,ROLE_PROFESSION,STR,AGI,INT,STA,HP,MP,HIT,DOD,CRI,WRE,VAM,BLS)
+          VALUES (#{USER_ID},#{ROLE_NAME},#{ROLE_PROFESSION},#{STR},#{AGI},#{INT},#{STA},#{HP},#{MP},#{HIT},#{DOD},#{CRI},#{WRE},#{VAM},#{BLS});
+        ]]>
+    </insert>
+</mapper>

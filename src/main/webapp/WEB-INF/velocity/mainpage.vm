@@ -1,0 +1,102 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>控制中心</title>
+    <link rel="stylesheet" href="../../addones/css/color.css"/>
+    <link rel="stylesheet" href="../../addones/css/easyui.css"/>
+    <link rel="stylesheet" href="../../addones/css/icon.css"/>
+    <link rel="stylesheet" href="../../addones/css/linkbutton.css"/>
+    <link rel="stylesheet" href="../../css/common.css">
+</head>
+<body>
+<div class="easyui-layout" style="width:1024px;height:650px;margin-left: auto;margin-right: auto">
+    <div data-options="region:'north',title:'调度中心',split:false" collapsible="false" style="height:100px;"></div>
+    <div region="west" split="false" title="导航" collapsible="false" style="width:300px;">
+        <ul id="tt" class="easyui-tree">
+            <li>
+                <span>任务监控</span>
+                <ul>
+                    <li>
+                        <span>查询任务配置</span>
+                    </li>
+                    <li>
+                        <span>查询任务实例</span>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <span>任务配置</span>
+                <ul>
+                    <li>
+                        <span>配置普通任务</span>
+                    </li>
+                    <li>
+                        <span>配置系统参数</span>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <span>系统信息</span>
+                <ul>
+                    <li>
+                        <span>更新日志</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div id="content" region="center" title="操作" style="padding:5px;">
+
+    </div>
+</div>
+</body>
+</html>
+<script src="../../addones/js/jquery.min.js" type="text/javascript"></script>
+<script src="../../addones/js/jquery.easyui.min.js" type="text/javascript"></script>
+<script src="../../addones/js/jquery.easyui.mobile.js" type="text/javascript"></script>
+<script src="../../addones/js/RegularExpression.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$("#tt").tree("collapseAll");
+        $("#tt").tree({
+            onClick:function (node) {
+                if (node.text == "配置普通任务"){
+                    LoadNormalConfigPage();
+                }
+                if(node.text == "查询任务配置"){
+                    LoadTaskQueryPage();
+                }
+            }
+        })
+    });
+    function LoadNormalConfigPage() {
+        $.post("/html/normal_task_config",function (data) {
+            if (data == null){
+                $("#content").html("数据请求错误，请检查服务器状态！");
+                return;
+            }
+            $("#content").html(data);
+            $.parser.parse($("#content"));
+        })
+    }
+    function LoadTaskQueryPage() {
+        $.post("/html/taskquery",function (data) {
+            if (data == null){
+                $("#content").html("数据请求错误，请检查服务器状态！");
+                return;
+            }
+            $("#content").html(data);
+            $.parser.parse($("#content"));
+            $(function () {
+                $("#taskQueryTable").datagrid({
+                    pagination:true,
+                    url:'/data/getAllTask.do',
+                }).datagrid("getPager").pagination({
+                    displayMsg:"显示第 {from} 条到 {to} 条，总计 {total} 条"
+                });
+            });
+        })
+    }
+</script>

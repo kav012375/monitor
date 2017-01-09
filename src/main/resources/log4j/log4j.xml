@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss:SSS} %l %m%n" />
+        </layout>
+        <!--限制输出级别 -->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMax" value="ERROR" />
+            <param name="LevelMin" value="DEBUG" />
+        </filter>
+    </appender>
+    <!-- [公共Appender] -->
+    <appender name="DEFAULT-APPENDER" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${webapp.root}/logs/common-default.log" />
+        <param name="Append" value="true" />
+        <param name="encoding" value="GBK" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+        <param name="MaxFileSize" value="4096" />
+        <param name="priority" value="INFO" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %c{2} - %m%n" />
+        </layout>
+    </appender>
+    <root>
+        <priority value="debug" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="DEFAULT-APPENDER" />
+    </root>
+    <category name="org.springframework">
+        <priority value="error" />
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="DEFAULT-APPENDER" />
+    </category>
+    <category name="org.apache.ibatis">
+        <priority value="error"/>
+        <appender-ref ref="DEFAULT-APPENDER"/>
+    </category>
+</log4j:configuration>

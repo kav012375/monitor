@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/css/color.css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/css/easyui.css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/css/icon.css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/css/icons" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/css/images" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/css/linkbutton.css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/css/mobile.css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/js/RegularExpression.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/js/easyloader.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/js/jquery.easyui.min.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/js/jquery.easyui.mobile.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/js/jquery.min.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/.gitignore" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/LICENSE" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/README.md" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/bower.json" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/data" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/dist" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/gulpfile.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/index.html" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/less" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/package.json" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/pages" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/addones/sbAdmin/vendor" charset="GBK" />
+    <file url="PROJECT" charset="GBK" />
+  </component>
+</project>
