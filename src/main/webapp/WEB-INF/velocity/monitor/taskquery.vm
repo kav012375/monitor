@@ -4,14 +4,14 @@
     </div>
 
 </div>
-##            真正的内容加载
+##真正的内容加载
 <div id="content" class="row">
-    <div class="col-lg-6" style="max-width: 650px !important;">
+    <div class="col-lg-12" style="max-width: 1170px !important;min-width: 450px !important;">
         <div class="panel panel-default">
             <div class="panel-heading">
                 任务列表
             </div>
-            <div class="panel-body">
+            <div class="panel-body" id="dataTableBody" style="display: none;">
                 <table id="dataTable" class="table table-striped table-bordered table-hover" style="width: 100%;">
                     <thead>
                     <tr>
@@ -19,11 +19,11 @@
                         <th>状态</th>
                         <th>分组</th>
                         <th>项目名称</th>
-                        <th>任务内容</th>
                         <th>循环类型</th>
                         <th>剩余次数</th>
                         <th>总次数</th>
                         <th>操作</th>
+                        <th>任务内容</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -44,9 +44,6 @@
                             </td>
                             <td id="tdProjectName${dataCell.id}">
                                 ${dataCell.projectName}
-                            </td>
-                            <td id="tdTaskContent${dataCell.id}" style="max-width: 540px !important;">
-                                ${dataCell.taskContent}
                             </td>
                             <td>
                                 #if(${dataCell.loopType} == 2)
@@ -71,6 +68,9 @@
                                         onclick="deleteTask(${dataCell.id})">删除任务
                                 </button>
                             </td>
+                            <td id="tdTaskContent${dataCell.id}">
+                                ${dataCell.taskContent}
+                            </td>
                         </tr>
                         #end
                     </tbody>
@@ -78,49 +78,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                任务处理
-            </div>
-            <div class="panel-body">
-                <div class="col-lg-6">
-                    <form role="form">
-                        <div class="form-group">
-                            <label>任务编号</label>
-                            <input class="form-control" id="selectTaskId" disabled="disabled"/>
-                        </div>
-                        <div class="form-group">
-                            <label>任务状态</label>
-                            <input class="form-control" id="selectTaskStatus" disabled="disabled"/>
-                        </div>
-                        <div class="form-group">
-                            <label>分组编号</label>
-                            <input id="selectGroup" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label>项目名称</label>
-                            <input id="selectProjectName" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label>循环次数</label></label>
-                            <input class="form-control" id="selectLoopTimes" />
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-6">
-                    <form role="form">
-                        <label>任务内容</label>
-                        <textarea id="mTaskContent" class="form-control" style="resize: none;height: 200px" />
-                    </form>
-                </div>
-            </div>
-            <div class="panel-footer" style="text-align: right">
-                <button class="btn btn-primary" onclick="confirmChange()">提交变更</button>
-                <button class="btn btn-info">回滚事务</button>
-            </div>
-        </div>
-    </div>
+
 </div>
 ##弹出的模态提示框
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -139,45 +97,132 @@
         </div>
     </div>
 </div>
+##修改任务模态框
+<div class="modal fade" id="modifyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modifyModalTitle"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        修改任务
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-6">
+                            <form role="form">
+                                <div class="form-group">
+                                    <label>任务编号</label>
+                                    <input class="form-control" id="selectTaskId" disabled="disabled"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>任务状态</label>
+                                    <input class="form-control" id="selectTaskStatus" disabled="disabled"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>分组编号</label>
+                                    <input id="selectGroup" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>项目名称</label>
+                                    <input id="selectProjectName" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>循环次数</label></label>
+                                    <input class="form-control" id="selectLoopTimes"/>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-6">
+                            <form role="form">
+                                <label>动作集合</label>
+                                <textarea id="mTaskAction" class="form-control" style="resize: none;"/>
+                            </form>
+                            <form role="form">
+                                <label>位置集合</label>
+                                <textarea id="mTaskPosition" class="form-control" style="resize: none;"/>
+                            </form>
+                            <button id="loadCurrentActionsAndPositions" onclick="loadCurrentTaskContent()" type="button" class="btn btn-success">加载当前任务</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnConfirmChange" onclick="confirmChange()">提交修改</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">取消修改</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     function modifyTask(id) {
-        var status = $.trim($("#tdStatus"+id).text());
-        var mgroup = $.trim($("#tdMgroup"+id).text());
-        var projectName = $.trim($("#tdProjectName"+id).text());
+        var status = $.trim($("#tdStatus" + id).text());
+        var mgroup = $.trim($("#tdMgroup" + id).text());
+        var projectName = $.trim($("#tdProjectName" + id).text());
+        var loopRuntimes = $.trim($("#tdLoopRunTimes" + id).text())
         $("#selectTaskId").val(id);
         $("#selectTaskStatus").val(status);
         $("#selectGroup").val(mgroup);
         $("#selectProjectName").val(projectName);
+        $("#selectLoopTimes").val(loopRuntimes);
+        $('#modifyModal').modal('show');
 
     }
     function confirmChange() {
+        $("#btnConfirmChange").button('loading');
         var id = $("#selectTaskId").val();
         var status = $("#selectTaskStatus").val();
         var mgroup = $("#selectGroup").val();
         var projectName = $("#selectProjectName").val();
         var loopTimes = $("#selectLoopTimes").val();
+        var actions = $("#mTaskAction").val();
+        var positions = $("#mTaskPosition").val();
 
-        if (id==""||status==""||mgroup==""||projectName==""||loopTimes==""){
+        if (id == "" || status == "" || mgroup == "" || projectName == "" || loopTimes == "") {
             $.confirm({
-                title:'警告',
-                content:'参数不完整！',
-                buttons:{
-                    "确认":function () {
+                title: '警告',
+                content: '参数不完整！',
+                buttons: {
+                    "确认": function () {
                         return;
                     }
                 }
             });
+            $("#btnConfirmChange").button('reset');
             return;
         }
 
 
         $.post("/task/modifytask",
-                {taskid:id,status:status,mgroup:mgroup,projectname:projectName,looptimes:loopTimes},
+                {taskid: id, status: status, mgroup: mgroup, projectname: projectName, looptimes: loopTimes,actions:actions,positions:positions},
                 function (data) {
-                    $("#myModalLabel").html("操作结果");
-                    $("#myModalContent").html(data);
-                    $('#myModal').modal('show');
+                    if(data == "更新成功！"){
+                        $.confirm({
+                            title: '结果',
+                            content: '更新成功,请刷新表格！',
+                            buttons: {
+                                "确认": function () {
+                                    $("#btnConfirmChange").button('reset');
+                                    $("#modifyModal").modal("hide");
+                                    return;
+                                }
+                            }
+                        });
+                    }else{
+                        $.confirm({
+                            title: '警告',
+                            content: data,
+                            buttons: {
+                                "确认": function () {
+                                    $("#btnConfirmChange").button('reset');
+                                    return;
+                                }
+                            }
+                        });
+                    }
                 });
+        $("#btnConfirmChange").button('reset');
     }
     function deleteTask(id) {
         if (id == null) {
@@ -200,16 +245,56 @@
                         $('#myModal').modal('show');
                     });
                 },
-                "取消": function () {}
+                "取消": function () {
+                }
             }
         });
         $("#btnDelete" + id).button('reset');
     }
+    function loadCurrentTaskContent() {
+        var id = $("#selectTaskId").val();
+        $.post('/data/getTaskActionAndPosition.do',
+                {id:id},
+                function (data) {
+                    if(data == "任务不存在"){
+                        $.confirm({
+                            title: '警告',
+                            content: '任务不存在！',
+                            buttons: {
+                                "确认": function () {
+                                    return;
+                                }
+                            }
+                        });
+                    }else if(data == "获取异常"){
+                        $.confirm({
+                            title: '警告',
+                            content: '系统异常！',
+                            buttons: {
+                                "确认": function () {
+                                    return;
+                                }
+                            }
+                        });
+                    }else{
+                        var result = String(data);
+                        var actions = result.split("&&&&")[0];
+                        console.log("actions = " + actions);
+                        var position = result.split("&&&&")[1];
+                        console.log("positions = " + position);
+                        $("#mTaskAction").val(actions);
+                        $("#mTaskPosition").val(position);
+                    }
+                });
+    }
     $("#dataTable").ready(function () {
         $('#dataTable').dataTable({
+            "bStateSave": true, ##存储当前状态，每次刷新表格，都停留在上次显示的位置
+            fixedHeader: true,
             pageLength: 10,
             responsive: true,
             searchDelay: 1000,
+            "processing": true,
             "ordering": false,
             "language": {
                 "paginate": {
@@ -225,7 +310,12 @@
                 "sZeroRecords": "对不起，查询不到任何相关数据",
                 "sEmptyTable": "未有相关数据",
                 "sLoadingRecords": "正在加载数据-请等待...",
+            },
+            "initComplete": function (settings, json) {
+                $('#dataTableBody').css("display", "block");
             }
         });
+
+
     });
 </script>

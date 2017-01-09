@@ -1,6 +1,8 @@
 package com.wulin.controller.data;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.wulin.biz.common.dto.ActionDO;
 import com.wulin.biz.common.dto.PositionDO;
 import com.wulin.biz.common.dto.TaskDistributeDTO;
@@ -156,7 +158,7 @@ public class DataAction {
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse,
             HttpSession httpSession
-    ){
+    ) throws Throwable{
         List<TaskDO> taskDOs = new ArrayList<TaskDO>();
         try {
             taskDOs = taskDAO.findAllTasks();
@@ -168,5 +170,44 @@ public class DataAction {
             logger.error("query all tasks failed ");
             return null;
         }
+    }
+
+    @RequestMapping(value = "/getTaskActionAndPosition.do")
+    public void getTaskActionAndPosition(
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse
+    ) throws Throwable {
+        try {
+            Long taskId = Long.parseLong(httpServletRequest.getParameter("id"));
+            TaskDO taskDO = taskDAO.findTaskById(taskId);
+            if (taskDO == null){
+                httpServletResponse.setCharacterEncoding("utf-8");
+                httpServletResponse.getWriter().print("任务不存在");
+                return;
+            }
+            JSONObject object = JSON.parseObject(taskDO.getTaskContent());
+            String result = "";
+            JSONArray jsonArray = object.getJSONArray("actionDOs");
+            for (Object s : jsonArray){
+                JSONObject tmpObj = JSON.parseObject(s.toString());
+                result = result+tmpObj.getString("action")+";";
+            }
+            jsonArray = object.getJSONArray("positionDOs");
+            result = result + "&&&&";
+            for (Object s : jsonArray){
+                JSONObject tmpObj = JSON.parseObject(s.toString());
+                result = result+tmpObj.getString("position")+";";
+            }
+
+            httpServletResponse.setCharacterEncoding("utf-8");
+            httpServletResponse.getWriter().print(result);
+
+        }catch (Exception e){
+            logger.error("获取位置和动作错误，错误原因 : "+e.getMessage());
+            httpServletResponse.setCharacterEncoding("utf-8");
+            httpServletResponse.getWriter().print("获取异常");
+        }
+
+
     }
 }
