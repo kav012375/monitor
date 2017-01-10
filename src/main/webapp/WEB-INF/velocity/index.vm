@@ -206,20 +206,45 @@
 
         </div>
     </div>
+    <div id="pageLoadingModal"
+         class="modal fade bs-example-modal-sm"
+         tabindex="-1" role="dialog"
+         aria-labelledby="mySmallModalLabel"
+         aria-hidden="true"
+         data-backdrop="static">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">请稍候</div>
+                <div class="modal-body">页面加载中...</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 <script>
     function btnQueryTaskClick() {
-        $("#page-wrapper").load("/html/taskquery");
+        $("#pageLoadingModal").modal("show");
+        $("#page-wrapper").load("/html/taskquery").after(function () {
+            $("#pageLoadingModal").modal("hide");
+        });
     }
     function btnAddTask() {
-        $("#page-wrapper").load("/html/normal_task_config");
+        $("#pageLoadingModal").modal("show");
+        $("#page-wrapper").load("/html/normal_task_config").after(function () {
+            $("#pageLoadingModal").modal("hide");
+        });
     }
     function btnTimedTaskClicked() {
-        $("#page-wrapper").load("/html/timedTaskConfig");
+        $("#pageLoadingModal").modal("show");
+        $("#page-wrapper").load("/html/timedTaskConfig").after(function () {
+            $("#pageLoadingModal").modal("hide");
+        });
     }
     function btnDataReportClicked() {
-        $("#page-wrapper").load("/report/frame");
+        $("#pageLoadingModal").modal("show");
+        $("#page-wrapper").load("/report/frame").after(function () {
+            $("#pageLoadingModal").modal("hide");
+        });
     }
 </script>
 <!-- jQuery -->
