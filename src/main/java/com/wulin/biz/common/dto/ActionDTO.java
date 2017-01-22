@@ -3,7 +3,7 @@ package com.wulin.biz.common.dto;
 /**
  * Created by zeusw on 2016/12/19.
  */
-public class ActionDO {
+public class ActionDTO {
     String action;
 
     public String getAction() {

@@ -1,6 +1,6 @@
 package MvcTest;
 
-import com.wulin.controller.user.UserAction;
+import com.wulin.web.controller.user.UserAction;
 import com.wulin.biz.common.constants.SessionEnum;
 import org.junit.Before;
 import org.junit.Test;

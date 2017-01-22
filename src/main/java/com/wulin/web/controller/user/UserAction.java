@@ -1,4 +1,4 @@
-package com.wulin.controller.user;
+package com.wulin.web.controller.user;
 
 import com.wulin.dal.User.entity.UserDO;
 import com.wulin.biz.core.user.constants.UserReturnCodeEnum;

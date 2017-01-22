@@ -30,11 +30,11 @@ public class TaskDistributeDTO {
     /**
      *位置
      */
-    List<PositionDO> positionDOs;
+    List<PositionDTO> positionDTOs;
     /**
      * 动作
      */
-    List<ActionDO> actionDOs;
+    List<ActionDTO> actionDTOs;
 
     public String getStatus() {
         return Status;
@@ -60,20 +60,20 @@ public class TaskDistributeDTO {
         this.taskUid = taskUid;
     }
 
-    public List<PositionDO> getPositionDOs() {
-        return positionDOs;
+    public List<PositionDTO> getPositionDTOs() {
+        return positionDTOs;
     }
 
-    public void setPositionDOs(List<PositionDO> positionDOs) {
-        this.positionDOs = positionDOs;
+    public void setPositionDTOs(List<PositionDTO> positionDTOs) {
+        this.positionDTOs = positionDTOs;
     }
 
-    public List<ActionDO> getActionDOs() {
-        return actionDOs;
+    public List<ActionDTO> getActionDTOs() {
+        return actionDTOs;
     }
 
-    public void setActionDOs(List<ActionDO> actionDOs) {
-        this.actionDOs = actionDOs;
+    public void setActionDTOs(List<ActionDTO> actionDTOs) {
+        this.actionDTOs = actionDTOs;
     }
 
     public String getUsername() {

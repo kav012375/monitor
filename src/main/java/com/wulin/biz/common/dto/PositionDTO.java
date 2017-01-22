@@ -3,7 +3,7 @@ package com.wulin.biz.common.dto;
 /**
  * Created by zeusw on 2016/12/19.
  */
-public class PositionDO {
+public class PositionDTO {
     String position;
 
     public String getPosition() {

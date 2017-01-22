@@ -1,4 +1,4 @@
-package com.wulin.controller.data;
+package com.wulin.web.controller.data;
 
 import com.wulin.dal.ServerList.dao.ServerListDAO;
 import com.wulin.dal.ServerList.entity.ServerListDO;

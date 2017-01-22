@@ -1,4 +1,4 @@
-package com.wulin.controller.data;
+package com.wulin.web.controller.data;
 
 import com.wulin.biz.timedTask.RefreshTask;
 import com.wulin.biz.timedTask.ReportTask;

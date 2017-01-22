@@ -1,11 +1,6 @@
-package com.wulin.controller.view;
+package com.wulin.web.controller.view;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.wulin.biz.common.service.ScalerService;
-import com.wulin.dal.Prosession.dao.ProsessionDAO;
-import com.wulin.dal.Role.dao.RoleDAO;
-import com.wulin.biz.core.user.service.UserService;
-import com.wulin.dal.interfaceRequestLog.dao.InterfaceRequestLogDAO;
 import com.wulin.dal.task.dao.TaskDAO;
 import com.wulin.dal.task.entity.TaskDO;
 import org.slf4j.Logger;
@@ -13,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;

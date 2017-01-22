@@ -1,10 +1,10 @@
-package com.wulin.controller.data;
+package com.wulin.web.controller.data;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.wulin.biz.common.dto.ActionDO;
-import com.wulin.biz.common.dto.PositionDO;
+import com.wulin.biz.common.dto.ActionDTO;
+import com.wulin.biz.common.dto.PositionDTO;
 import com.wulin.biz.common.dto.TaskDistributeDTO;
 import com.wulin.biz.common.service.CheckService;
 import com.wulin.biz.common.service.ScalerService;
@@ -117,20 +117,20 @@ public class DataAction {
             taskDistributeDTO.setMediaName(mediaName);
             String[] positionsValueList = positions.split(";");
             String[] actionsValueList = actions.split(";");
-            List<PositionDO> positionDOs = new ArrayList<PositionDO>();
-            List<ActionDO> actionDOs = new ArrayList<ActionDO>();
+            List<PositionDTO> positionDTOs = new ArrayList<PositionDTO>();
+            List<ActionDTO> actionDTOs = new ArrayList<ActionDTO>();
             for (String eve:positionsValueList) {
-                PositionDO pDO = new PositionDO();
+                PositionDTO pDO = new PositionDTO();
                 pDO.setPosition(eve);
-                positionDOs.add(pDO);
+                positionDTOs.add(pDO);
             }
             for (String eve:actionsValueList) {
-                ActionDO aDO = new ActionDO();
+                ActionDTO aDO = new ActionDTO();
                 aDO.setAction(eve);
-                actionDOs.add(aDO);
+                actionDTOs.add(aDO);
             }
-            taskDistributeDTO.setPositionDOs(positionDOs);
-            taskDistributeDTO.setActionDOs(actionDOs);
+            taskDistributeDTO.setPositionDTOs(positionDTOs);
+            taskDistributeDTO.setActionDTOs(actionDTOs);
             taskDistributeDTO.setTaskUid(String.valueOf(id));
             String json = JSON.toJSONString(taskDistributeDTO);
             taskDO.setId(id);

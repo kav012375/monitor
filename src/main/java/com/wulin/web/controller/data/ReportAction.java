@@ -1,10 +1,7 @@
-package com.wulin.controller.data;
+package com.wulin.web.controller.data;
 
-import com.alibaba.fastjson.JSON;
 import com.wulin.biz.common.constants.ErrorCodeEnum;
-import com.wulin.biz.common.dto.DailyReportPageDTO;
 import com.wulin.dal.dailyReport.dao.DailyReportDAO;
-import com.wulin.dal.dailyReport.dto.DailyReportContentDTO;
 import com.wulin.dal.dailyReport.dto.DailyRportQueryDTO;
 import com.wulin.dal.dailyReport.entity.DailyReportDO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 

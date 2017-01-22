@@ -3,6 +3,7 @@ package com.wulin.biz.core.task.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wulin.biz.common.service.ScalerService;
+import com.wulin.biz.common.utils.ScalerUtils;
 import com.wulin.biz.core.task.service.TaskService;
 import com.wulin.dal.interfaceRequestLog.dao.InterfaceRequestLogDAO;
 import com.wulin.dal.interfaceRequestLog.dto.InterfaceRequestLogQueryDTO;
@@ -42,7 +43,6 @@ public class TaskImpl implements TaskService {
     InterfaceRequestLogDAO interfaceRequestLogDAO;
 
     private static Logger logger = LoggerFactory.getLogger("DEFAULT-APPENDER");
-    private static int oldIndex = 0;
     private Random random = new Random();
 
     public void getNormalTask(HttpServletRequest httpServletRequest,
@@ -70,13 +70,8 @@ public class TaskImpl implements TaskService {
             taskDO.setMgroup(mgroup);
             taskDO.setStatus(0);
             //检查请求的ip是否重复
-            InterfaceRequestLogQueryDTO interfaceRequestLogQueryDTO = new InterfaceRequestLogQueryDTO();
-            Timestamp queryTime = new Timestamp(System.currentTimeMillis());
-            interfaceRequestLogQueryDTO.setEndTime(queryTime.toString().split(" ")[0] + " 23:59:59");
-            interfaceRequestLogQueryDTO.setStartTime(queryTime.toString().split(" ")[0] + " 00:00:00");
-            interfaceRequestLogQueryDTO.setMgroup(taskDO.getMgroup());
-            interfaceRequestLogQueryDTO.setProjectName(taskDO.getProjectName());
-            interfaceRequestLogQueryDTO.setIpAddress(ipAddress);
+            InterfaceRequestLogQueryDTO interfaceRequestLogQueryDTO =
+                    ScalerUtils.assembleInterfaceRequestLogQyueryUtil(taskDO,ipAddress);
             boolean checResult = scalerService.checkDuplicateIp(interfaceRequestLogQueryDTO);
             if (!checResult) {
                 //发现重复IP过滤掉
@@ -148,7 +143,7 @@ public class TaskImpl implements TaskService {
             }
             httpServletResponse.setCharacterEncoding("utf-8");
             httpServletResponse.getWriter().println(content);
-            //启动新的线程来记录请求记录
+            //记录请求日志
             InterfaceRequestLogDO interfaceRequestLogDO = new InterfaceRequestLogDO();
             interfaceRequestLogDO.setInterfaceName("getTask");
             interfaceRequestLogDO.setRequestTime(new Timestamp(System.currentTimeMillis()));

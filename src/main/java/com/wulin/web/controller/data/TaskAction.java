@@ -1,36 +1,28 @@
-package com.wulin.controller.data;
+package com.wulin.web.controller.data;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.wulin.biz.common.dto.ActionDO;
-import com.wulin.biz.common.dto.PositionDO;
-import com.wulin.biz.common.dto.ScalerDTO;
+import com.wulin.biz.common.dto.ActionDTO;
+import com.wulin.biz.common.dto.PositionDTO;
 import com.wulin.biz.common.dto.TaskDistributeDTO;
 import com.wulin.biz.common.service.ScalerService;
 import com.wulin.biz.common.service.SecurityService;
 import com.wulin.biz.core.task.service.TaskService;
-import com.wulin.dal.interfaceRequestLog.entity.InterfaceRequestLogDO;
-import com.wulin.dal.task.constants.StatusEnum;
 import com.wulin.dal.task.dao.TaskDAO;
 import com.wulin.dal.task.entity.TaskDO;
 import com.wulin.dal.taskInstance.dao.TaskInstanceDAO;
-import com.wulin.dal.taskInstance.entity.TaskInstanceDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.ws.soap.addressing.server.annotation.Action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by zeusw on 2016/12/19.
@@ -147,23 +139,23 @@ public class TaskAction {
         taskDistributeDTO.setPassword(object.getString("password"));
 
         //组装新的task_content
-        List<PositionDO> positionDOs = new ArrayList<PositionDO>();
-        List<ActionDO> actionDOs = new ArrayList<ActionDO>();
+        List<PositionDTO> positionDTOs = new ArrayList<PositionDTO>();
+        List<ActionDTO> actionDTOs = new ArrayList<ActionDTO>();
         String[] positionsValueList = positions.split(";");
         String[] actionsValueList = actions.split(";");
         for (String eve:positionsValueList) {
-            PositionDO pDO = new PositionDO();
+            PositionDTO pDO = new PositionDTO();
             pDO.setPosition(eve);
-            positionDOs.add(pDO);
+            positionDTOs.add(pDO);
         }
         for (String eve:actionsValueList) {
-            ActionDO aDO = new ActionDO();
+            ActionDTO aDO = new ActionDTO();
             aDO.setAction(eve);
-            actionDOs.add(aDO);
+            actionDTOs.add(aDO);
         }
 
-        taskDistributeDTO.setActionDOs(actionDOs);
-        taskDistributeDTO.setPositionDOs(positionDOs);
+        taskDistributeDTO.setActionDTOs(actionDTOs);
+        taskDistributeDTO.setPositionDTOs(positionDTOs);
         String json = JSON.toJSONString(taskDistributeDTO);
         taskDO.setTaskContent(json);
 
