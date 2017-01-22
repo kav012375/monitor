@@ -17,5 +17,6 @@ public interface TaskService {
      */
     void getNormalTask(HttpServletRequest httpServletRequest,
                        HttpServletResponse httpServletResponse,
-                       HttpSession httpSession) throws Throwable;
+                       HttpSession httpSession,
+                       final String ipAddress) throws Throwable;
 }

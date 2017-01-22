@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wulin.biz.common.dto.ActionDO;
 import com.wulin.biz.common.dto.PositionDO;
+import com.wulin.biz.common.dto.ScalerDTO;
 import com.wulin.biz.common.dto.TaskDistributeDTO;
+import com.wulin.biz.common.service.ScalerService;
+import com.wulin.biz.common.service.SecurityService;
 import com.wulin.biz.core.task.service.TaskService;
+import com.wulin.dal.interfaceRequestLog.entity.InterfaceRequestLogDO;
 import com.wulin.dal.task.constants.StatusEnum;
 import com.wulin.dal.task.dao.TaskDAO;
 import com.wulin.dal.task.entity.TaskDO;
@@ -23,6 +27,7 @@ import org.springframework.ws.soap.addressing.server.annotation.Action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -39,6 +44,10 @@ public class TaskAction {
     TaskInstanceDAO taskInstanceDAO;
     @Autowired
     TaskService taskService;
+    @Autowired
+    ScalerService scalerService;
+    @Autowired
+    SecurityService securityService;
 
     private static Logger logger = LoggerFactory.getLogger("DEFAULT-APPENDER");
 
@@ -86,10 +95,11 @@ public class TaskAction {
             HttpServletResponse httpServletResponse,
             HttpSession httpSession
     ) throws Throwable {
+        String ipAddress = securityService.GetRealIpAddr(httpServletRequest);
         /**
          * 获取普通的任务
          */
-        taskService.getNormalTask(httpServletRequest,httpServletResponse,httpSession);
+        taskService.getNormalTask(httpServletRequest,httpServletResponse,httpSession,ipAddress);
     }
 
     /**

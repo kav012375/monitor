@@ -11,4 +11,5 @@ import java.util.List;
 public interface DailyReportDAO {
     int insertDailyReport(DailyReportDO dailyReportDO);
     List<DailyReportDO> findDailyReportContentByTime(DailyRportQueryDTO DailyRportQueryDTO);
+    void deleteZeroRunTimesReport();
 }

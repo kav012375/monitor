@@ -36,6 +36,11 @@ public class ReportTask {
 
     private static Logger logger = LoggerFactory.getLogger("DEFAULT-APPENDER");
 
+    public ReportTask() {
+        super();
+        logger.error("我被初始化了========================================================");
+    }
+
     public void generateDailyReportTask() throws Throwable{
         new Thread(new Runnable() {
             public void run() {
@@ -113,6 +118,8 @@ public class ReportTask {
             scScheduleLogDO.setCostTime(costTime.toString());
             scScheduleLogDO.setTaskName("com.wulin.biz.timedTask.ReportTask.generateTaskReprot");
             scScheduleLogDAO.insertScScheduleTaskLog(scScheduleLogDO);
+            //删除所有数据为0的记录
+            dailyReportDAO.deleteZeroRunTimesReport();
         }catch (Exception e){
             logger.error("when excute report task ,there is an exception,error is "+e.getMessage());
         }

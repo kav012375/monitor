@@ -7,6 +7,7 @@ import com.wulin.biz.common.dto.ActionDO;
 import com.wulin.biz.common.dto.PositionDO;
 import com.wulin.biz.common.dto.TaskDistributeDTO;
 import com.wulin.biz.common.service.CheckService;
+import com.wulin.biz.common.service.ScalerService;
 import com.wulin.biz.core.role.service.RoleDataService;
 import com.wulin.dal.task.constants.StatusEnum;
 import com.wulin.dal.task.dao.TaskDAO;
@@ -37,6 +38,8 @@ public class DataAction {
     RoleDataService roleDataService;
     @Autowired
     TaskDAO taskDAO;
+    @Autowired
+    ScalerService scalerService;
     private static Logger logger = LoggerFactory.getLogger("CONSOLE");
     @RequestMapping(value = "getname.do")
     public String getRandomName(
@@ -209,5 +212,18 @@ public class DataAction {
         }
 
 
+    }
+    @RequestMapping(value = "/getAllReqTimes")
+    public void getAllReqTimes(
+            HttpServletResponse httpServletResponse
+    ){
+        try {
+            Long Times = scalerService.getRequestTimesByDay();
+            httpServletResponse.setCharacterEncoding("utf-8");
+            httpServletResponse.getWriter().print(Times);
+        }catch (Exception e){
+            logger.error("Get All Request Times Exception, error is " + e.getMessage());
+            return;
+        }
     }
 }

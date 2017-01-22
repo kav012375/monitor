@@ -1,9 +1,11 @@
 package com.wulin.controller.view;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.wulin.biz.common.service.ScalerService;
 import com.wulin.dal.Prosession.dao.ProsessionDAO;
 import com.wulin.dal.Role.dao.RoleDAO;
 import com.wulin.biz.core.user.service.UserService;
+import com.wulin.dal.interfaceRequestLog.dao.InterfaceRequestLogDAO;
 import com.wulin.dal.task.dao.TaskDAO;
 import com.wulin.dal.task.entity.TaskDO;
 import org.slf4j.Logger;
@@ -27,19 +29,19 @@ import java.util.List;
 @RequestMapping(value = "/html")
 public class HtmlAction {
     @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleDAO roleDAO;
-    @Autowired
-    private ProsessionDAO prosessionDAO;
-    @Autowired
     private TaskDAO taskDAO;
+    @Autowired
+    private ScalerService scalerService;
 
     private static Logger logger = LoggerFactory.getLogger("DEFAULT-APPENDER");
 
     @RequestMapping(value = "index")
     public ModelAndView index() {
         ModelAndView mv = new ModelAndView();
+        Long Times = scalerService.getRequestTimesByDay();
+        Long runningTasks = taskDAO.countRuningTaskAmount();
+        mv.addObject("reqTimes",Times);
+        mv.addObject("runningTasks",runningTasks);
         mv.setViewName("index");
         return mv;
     }

@@ -20,5 +20,9 @@
         ]]>
     </select>
 
+    <delete id="deleteZeroRunTimesReport">
+        DELETE FROM daily_report WHERE run_times = 0;
+    </delete>
+
 
 </mapper>
