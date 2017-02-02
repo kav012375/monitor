@@ -26,6 +26,19 @@
                         <th>任务内容</th>
                     </tr>
                     </thead>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                     <tbody>
                         #foreach(${dataCell} in ${datasource})
                         <tr id="trRow${dataCell.id}">
@@ -316,6 +329,23 @@
             }
         });
 
+        //====给每列添加搜索框
+        $("#dataTable tfoot th").each(function(){
+            var title = $('#dataTable thead th').eq( $(this).index() ).text();
+            if(title == "分组" || title == "项目名称" || title == "状态"){
+                $(this).html( '<input type="text" class="footer-search" placeholder="搜索'+'" />' );
+            }
+        });
 
+        var table = $('#dataTable').DataTable();
+        table.columns().eq( 0 ).each( function ( colIdx ) {
+            $( 'input', table.column( colIdx ).footer() ).on( 'keyup change', function () {
+                table
+                        .column( colIdx )
+                        .search( this.value )
+                        .draw();
+            } );
+        } );
+        //=====搜索添加结束
     });
 </script>
