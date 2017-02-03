@@ -133,6 +133,9 @@ public class DataAction {
             taskDistributeDTO.setActionDTOs(actionDTOs);
             taskDistributeDTO.setTaskUid(String.valueOf(id));
             String json = JSON.toJSONString(taskDistributeDTO);
+            //将JSON中的DTOS替换成DOS
+            json = json.replace("actionDTOs","actionDOs");
+            json = json.replace("positionDTOs","positionDOs");
             taskDO.setId(id);
             taskDO.setTaskContent(json);
             taskDO.setStatus(StatusEnum.NotRun.getCode());
