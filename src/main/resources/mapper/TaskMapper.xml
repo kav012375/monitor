@@ -6,10 +6,10 @@
         <result property="status" column="status"/>
         <result property="taskContent" column="taskContent"/>
         <result property="loopType" column="loopType"/>
-        <result property="runTimes" column="runTimes" />
-        <result property="mgroup" column="mgroup" />
-        <result property="projectName" column="projectName" />
-        <result property="loopRunTimes" column="loopRunTimes" />
+        <result property="runTimes" column="runTimes"/>
+        <result property="mgroup" column="mgroup"/>
+        <result property="projectName" column="projectName"/>
+        <result property="loopRunTimes" column="loopRunTimes"/>
     </resultMap>
 
     <delete id="deleteTaskByTaskId" parameterType="com.wulin.dal.task.entity.TaskDO">
@@ -20,7 +20,8 @@
         SELECT * FROM task;
     </select>
 
-    <select id="findTaskByStatusAndGroupAndProjectName" resultMap="TaskMap" parameterType="com.wulin.dal.task.entity.TaskDO">
+    <select id="findTaskByStatusAndGroupAndProjectName" resultMap="TaskMap"
+            parameterType="com.wulin.dal.task.entity.TaskDO">
         SELECT * FROM task WHERE status = #{status} and mgroup = #{mgroup} and projectName = #{projectName} limit 50;
     </select>
 
@@ -28,8 +29,32 @@
         SELECT * FROM task WHERE id=#{id};
     </select>
 
-    <select id="findVailedTaskByStatusAndGroupAndProjectAndRuntimes" resultMap="TaskMap" parameterType="com.wulin.dal.task.entity.TaskDO">
-        SELECT * FROM task WHERE status = #{status} and mgroup = #{mgroup} and projectName = #{projectName} AND runTimes > 0 limit 50;
+    <select id="findVailedTaskByStatusAndGroupAndProjectAndRuntimes" resultMap="TaskMap"
+            parameterType="com.wulin.dal.task.entity.TaskDO">
+        <![CDATA[
+            SELECT * FROM task
+            WHERE status = #{status}
+            AND mgroup = #{mgroup}
+            AND projectName = #{projectName}
+            AND runTimes > 0
+            AND id >= (
+    	        (SELECT MAX(id) FROM task WHERE status = #{status}
+									      AND mgroup = #{mgroup}
+									      AND projectName = #{projectName}
+									      AND runTimes > 0)
+    	        -
+    	        (SELECT MIN(id) FROM task WHERE status = #{status}
+									      AND mgroup = #{mgroup}
+									      AND projectName = #{projectName}
+									      AND runTimes > 0)
+	            ) * RAND()
+	            +
+	            (SELECT MIN(id) FROM task WHERE status = #{status}
+								          AND mgroup = #{mgroup}
+								          AND projectName = #{projectName}
+								          AND runTimes > 0)
+            LIMIT 1;
+        ]]>
     </select>
 
     <select id="findTaskByLoopTypeAndStatus" resultMap="TaskMap" parameterType="com.wulin.dal.task.entity.TaskDO">
@@ -41,11 +66,11 @@
     </select>
 
     <insert id="insertTask" parameterType="com.wulin.dal.task.entity.TaskDO" useGeneratedKeys="true" keyProperty="id">
-          <selectKey resultType="java.lang.Long" keyProperty="id">
-              SELECT LAST_INSERT_ID()
-          </selectKey>
-          INSERT INTO task (status,taskContent,loopType,runTimes,mgroup,projectName,loopRunTimes)
-          VALUES (#{status},#{taskContent},#{loopType},#{runTimes},#{mgroup},#{projectName},#{loopRunTimes});
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO task (status,taskContent,loopType,runTimes,mgroup,projectName,loopRunTimes)
+        VALUES (#{status},#{taskContent},#{loopType},#{runTimes},#{mgroup},#{projectName},#{loopRunTimes});
     </insert>
 
     <update id="updateTaskById" parameterType="com.wulin.dal.task.entity.TaskDO">
