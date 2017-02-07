@@ -15,11 +15,13 @@ public class TaskDO implements Serializable {
     private String mgroup;
     private String projectName;
     private int loopRunTimes;
+    private String articleType;
 
     public TaskDO(){
         this.setLoopType(100);
         this.setRunTimes(-1);
         this.setStatus(-1);
+        this.setArticleType("null");
     }
 
     public static long getSerialVersionUID() {
@@ -88,5 +90,13 @@ public class TaskDO implements Serializable {
 
     public void setLoopRunTimes(int loopRunTimes) {
         this.loopRunTimes = loopRunTimes;
+    }
+
+    public String getArticleType() {
+        return articleType;
+    }
+
+    public void setArticleType(String articleType) {
+        this.articleType = articleType;
     }
 }

@@ -29,7 +29,7 @@
     <link href="../../addones/sbAdmin/dist/css/jquery-confirm.css" rel="stylesheet" type="text/css"/>
     <link href="../../addones/sbAdmin/dist/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
     <style>
-        .footer-search{
+        .footer-search {
             max-width: 66px;
         }
     </style>
@@ -194,6 +194,14 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
+                        <a href="#0"><i class="fa fa-star-o fa-fw"></i> 评论管理<span class="fa arrow"></span> </a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#plgl01" onclick="btnArticleConfigClicked()">评论配置</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
                         <a href="#0"><i class="fa fa-wrench fa-fw"></i> 系统任务<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -297,14 +305,14 @@
 <script src="../../addones/sbAdmin/js/jquery-confirm.js"></script>
 <script src="../../addones/sbAdmin/js/bootstrap-datetimepicker.min.js"></script>
 <script>
-//    $(document).ready(function () {
-//        $.post('/data/getAllReqTimes', function (data) {
-//            $("#divReqAllTimes").html(data);
-//        });
-//        $.post('/data/getRunTaskAmount',function (data) {
-//            $("#divRunTaskAmount").html(data);
-//        });
-//    });
+    //    $(document).ready(function () {
+    //        $.post('/data/getAllReqTimes', function (data) {
+    //            $("#divReqAllTimes").html(data);
+    //        });
+    //        $.post('/data/getRunTaskAmount',function (data) {
+    //            $("#divRunTaskAmount").html(data);
+    //        });
+    //    });
     function btnQueryTaskClick() {
         $("#pageLoadingModal").modal("show");
         $("#page-wrapper").load("/html/taskquery").after(function () {
@@ -326,6 +334,12 @@
     function btnDataReportClicked() {
         $("#pageLoadingModal").modal("show");
         $("#page-wrapper").load("/report/frame").after(function () {
+            $("#pageLoadingModal").modal("hide");
+        });
+    }
+    function btnArticleConfigClicked() {
+        $("#pageLoadingModal").modal("show");
+        $("#page-wrapper").load("/html/articlemanager").after(function () {
             $("#pageLoadingModal").modal("hide");
         });
     }

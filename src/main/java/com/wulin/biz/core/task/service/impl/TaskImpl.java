@@ -5,6 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.wulin.biz.common.service.ScalerService;
 import com.wulin.biz.common.utils.ScalerUtils;
 import com.wulin.biz.core.task.service.TaskService;
+import com.wulin.dal.cfgArticlesType.dao.CfgArticlesTypeDAO;
+import com.wulin.dal.infArticles.dao.InfArticlesDAO;
+import com.wulin.dal.infArticles.entity.InfArticlesDO;
 import com.wulin.dal.interfaceRequestLog.dao.InterfaceRequestLogDAO;
 import com.wulin.dal.interfaceRequestLog.dto.InterfaceRequestLogQueryDTO;
 import com.wulin.dal.interfaceRequestLog.entity.InterfaceRequestLogDO;
@@ -41,6 +44,10 @@ public class TaskImpl implements TaskService {
     ScalerService scalerService;
     @Autowired
     InterfaceRequestLogDAO interfaceRequestLogDAO;
+    @Autowired
+    CfgArticlesTypeDAO cfgArticlesTypeDAO;
+    @Autowired
+    InfArticlesDAO infArticlesDAO;
 
     private static Logger logger = LoggerFactory.getLogger("DEFAULT-APPENDER");
     private Random random = new Random();
@@ -127,6 +134,7 @@ public class TaskImpl implements TaskService {
 //                return;
             }
             String content = taskInstanceDO.getContent();
+            //账号类型不为空，则获取账号信息
             if (accountType != null) {
                 //根据账户类型从账号库中随机选择一个账号密码
                 UserPwdConfigDO userPwdConfigDO = userPwdConfigDAO.findRandomUserPwdByProject(accountType);
@@ -139,6 +147,20 @@ public class TaskImpl implements TaskService {
                         tmpObj.put("password", userPwdConfigDO.getPwd());
                         content = JSONObject.toJSONString(tmpObj);
                     }
+                }
+            }
+            //评论类型不为空，则下发评论
+            if((!taskDO.getArticleType().equals(""))&&(!taskDO.getArticleType().equals("null"))&&(taskDO.getArticleType()!=null)){
+                //获取相关评论
+                List<InfArticlesDO> infArticlesDOs = infArticlesDAO.findArticlesContentByArticleTypeId(
+                        Integer.parseInt(taskDO.getArticleType()));
+                int infSize = infArticlesDOs.size();
+                if (infSize>=1){
+                    int randomInf = random.nextInt(infSize);
+                    String articlesContent = infArticlesDOs.get(randomInf).getArticleContent();
+                    JSONObject infObj = JSON.parseObject(content);
+                    infObj.put("articles",articlesContent);
+                    content = JSONObject.toJSONString(infObj);
                 }
             }
             httpServletResponse.setCharacterEncoding("utf-8");

@@ -1,0 +1,209 @@
+<div class="alert alert-success" role="alert">
+    <button class="btn btn-default" onclick="addNewArticlesBtnClick()"><i class="fa fa-plus-circle"></i> 新增评论</button>
+    <button class="btn btn-default" onclick="deleteArticles()"><i class="fa fa-minus-circle"></i> 删除评论</button>
+    <button class="btn btn-default" onclick="modifyArticlesBtnClick()"><i class="fa fa-gear"></i> 修改评论</button>
+</div>
+<div id="dataTableBody" style="display: none;">
+    <table id="dataTable" class="table table-striped table-bordered table-hover" style="width: 100%;">
+        <thead>
+        <tr>
+            <th style="max-width: 70px;text-align: center">
+                <input type="checkbox" id="cbSelectAll" class="checkall" value=""/>
+            </th>
+            <th style="max-width: 70px">ID</th>
+            <th>评论内容</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach(${dataCell} in ${artList})
+            <tr>
+                <td style="text-align: center;">
+                    <input type="checkbox" class="checkchild" id="selectRank${dataCell.id}" value="${dataCell.id}"/>
+                </td>
+                <td>
+                    ${dataCell.id}
+                </td>
+                <td id="artContent${dataCell.id}">
+                    ${dataCell.articleContent}
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+</div>
+##添加评论的模态框
+<div class="modal fade" id="addNewArticlesModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-title" class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        评论编辑
+                    </div>
+                    <div class="panel-body">
+                        <form role="form">
+                            <div class="form-group">
+                                <label>当前评论类型名</label>
+                                <input class="form-control" id="selectArticlesName" disabled="disabled"/>
+                            </div>
+                            <div class="form-group">
+                                <label>编辑评论</label>
+                                <textarea class="form-control" id="newArticlesEditor" style="resize: none;height: 200px;"/>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="actionBtn" class="btn btn-success btn-xs">提交</button>
+                <button type="button" class="btn btn-primary btn-xs" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#dataTable").ready(function () {
+        $('#dataTable').dataTable({
+            fixedHeader: true,
+            pageLength: 10,
+            responsive: true,
+            searchDelay: 1000,
+            "processing": true,
+            "ordering": false,
+            "language": {
+                "paginate": {
+                    "last": "Last page",
+                    "next": "下一页",
+                    "previous": "上一页",
+                },
+                searchPlaceholder: "请输入查询条件",
+                "search": "搜索：",
+//                "info":"当前第 _PAGE_ 页，总计 _PAGES_ 页",
+                "info": "显示 _START_ 到 _END_ 个评论，总计 _TOTAL_ 评论",
+                "lengthMenu": "显示 _MENU_ 记录每页",
+                "sZeroRecords": "对不起，查询不到任何相关数据",
+                "sEmptyTable": "未有相关数据",
+                "sLoadingRecords": "正在加载数据-请等待...",
+            },
+            "initComplete": function (settings, json) {
+                $('#dataTableBody').css("display", "block");
+            }
+        });
+    });
+
+    $(".checkall").click(function () {
+        var check = $(this).prop("checked");
+        $(".checkchild").prop("checked", check);
+    });
+    
+    function addNewArticlesBtnClick() {
+        $("#modal-title").html("添加评论");
+        $("#actionBtn").attr("onclick","confirmAddNewArticles()");
+        $("#selectArticlesName").val($("#currentSelectTitle").val());
+        $('#addNewArticlesModal').modal('show');
+    }
+
+    function modifyArticlesBtnClick() {
+        $("#modal-title").html("修改评论");
+        $("#actionBtn").attr("onclick","confirmModifyArtcles()");
+        $("#selectArticlesName").val($("#currentSelectTitle").val());
+        if($(".checkchild:checked").length > 1){
+            $.alert({
+                title: '提示!',
+                content: '一次只能修改一条评论！'
+            });
+            return;
+        }
+        var cId = $(".checkchild:checked").val();
+        $("#newArticlesEditor").val($.trim($("#artContent"+cId).text()));
+        $('#addNewArticlesModal').modal('show');
+    }
+
+    function confirmAddNewArticles() {
+        //获取评论类型id
+        var artId = $("#currentSelectValue").val();
+        //获取评论内容
+        var artContent = $("#newArticlesEditor").val();
+        $.post("/article/add_new_articles_content",{aId:artId,aContent:artContent},function (data) {
+            if (data == "新增成功！"){
+                $.alert({
+                    title: '提示!',
+                    content: '新增评论成功！'
+                });
+                $("#newArticlesEditor").val("");
+            }else{
+                $.alert({
+                    title: '错误!',
+                    content: data
+                });
+            }
+        });
+    }
+
+    function confirmModifyArtcles() {
+        //获取评论类型id
+        var cId = $(".checkchild:checked").val();
+        //获取评论内容
+        var artContent = $("#newArticlesEditor").val();
+        $.post("/article/modify_articlescontent_by_id",{aId:cId,aContent:artContent},function (data) {
+            if (data == "更新成功！"){
+                $.confirm({
+                    title: '提示!',
+                    content: '修改评论成功！',
+                    buttons:{
+                        OK:function () {
+                            $("#newArticlesEditor").val("");
+                            $('#addNewArticlesModal').modal('hide');
+                        }
+                    }
+                });
+
+            }else{
+                $.alert({
+                    title: '错误!',
+                    content: data
+                });
+            }
+        });
+    }
+    
+    function deleteArticles() {
+        //获取所有已经选择的评论id
+        var idsArray = new Array();
+        var deleteStr = "";
+        $(".checkchild:checked").each(function () {
+            deleteStr = deleteStr + $(this).val()+";";
+            idsArray.push($(this).val());
+        });
+        $.confirm({
+            title:'注意！',
+            content:'是否确认删除所选项，当前已经选择了'+idsArray.length + "条数据！",
+            buttons:{
+                "确定":function () {
+                    $.post("/article/delete_articlescontent_by_id",{aId:deleteStr},function (data) {
+                       if(data == "更新完成"){
+                           queryArticlesList();
+                       }else{
+                           $.confirm({
+                               title:"提示！",
+                               content:data,
+                               buttons:{
+                                   OK:function () {
+                                       queryArticlesList();
+                                   }
+                               }
+                           });
+                       }
+                    });
+                },
+                "再考虑考虑":function () {
+                    //CLOSED
+                }
+
+            }
+        });
+    }
+</script>

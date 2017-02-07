@@ -85,6 +85,8 @@ public class DataAction {
                 httpServletRequest.getParameter("looptype") !=null ? httpServletRequest.getParameter("looptype") : "default";
         String loopRunTimes =
                 httpServletRequest.getParameter("loopruntimes") !=null ? httpServletRequest.getParameter("loopruntimes") : "default";
+        String artType =
+                httpServletRequest.getParameter("artType") !=null ? httpServletRequest.getParameter("artType") : "null";
 
         try {
             if(     mediaName.equals("default")  ||
@@ -142,6 +144,7 @@ public class DataAction {
             taskDO.setRunTimes(Integer.parseInt(runtimes));
             taskDO.setMgroup(mgroup);
             taskDO.setProjectName(projectName);
+            taskDO.setArticleType(artType);
             if (loopType.equals("2")){
                 taskDO.setLoopType(2);
             }else{

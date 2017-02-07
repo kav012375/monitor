@@ -114,6 +114,7 @@ public class TaskAction {
         int loopRunTimes = Integer.parseInt(httpServletRequest.getParameter("looptimes"));
         String actions = httpServletRequest.getParameter("actions");
         String positions = httpServletRequest.getParameter("positions");
+        String artType = httpServletRequest.getParameter("artType");
         if (actions == null||actions.equals("")||positions==null||positions.equals("")){
             httpServletResponse.setCharacterEncoding("utf-8");
             httpServletResponse.getWriter().print("位置或动作为空！");
@@ -125,6 +126,7 @@ public class TaskAction {
         taskDO.setLoopRunTimes(loopRunTimes);
         taskDO.setMgroup(mgroup);
         taskDO.setProjectName(projectName);
+        taskDO.setArticleType(artType);
         //获取当前任务的content
         TaskDO oldTaskDO = taskDAO.findTaskById(taskId);
 
@@ -157,6 +159,9 @@ public class TaskAction {
         taskDistributeDTO.setActionDTOs(actionDTOs);
         taskDistributeDTO.setPositionDTOs(positionDTOs);
         String json = JSON.toJSONString(taskDistributeDTO);
+        //将JSON中的DTOS替换成DOS
+        json = json.replace("actionDTOs","actionDOs");
+        json = json.replace("positionDTOs","positionDOs");
         taskDO.setTaskContent(json);
 
         int updateNum = taskDAO.updateTaskById(taskDO);
@@ -167,6 +172,5 @@ public class TaskAction {
             httpServletResponse.setCharacterEncoding("utf-8");
             httpServletResponse.getWriter().print("更新成功！");
         }
-
     }
 }

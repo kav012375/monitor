@@ -1,6 +1,10 @@
-package com.wulin.web.controller.view;
+package com.wulin.web.view;
 
 import com.wulin.biz.common.service.ScalerService;
+import com.wulin.dal.cfgArticlesType.dao.CfgArticlesTypeDAO;
+import com.wulin.dal.cfgArticlesType.entity.CfgArticlesTypeDO;
+import com.wulin.dal.infArticles.dao.InfArticlesDAO;
+import com.wulin.dal.infArticles.entity.InfArticlesDO;
 import com.wulin.dal.task.dao.TaskDAO;
 import com.wulin.dal.task.entity.TaskDO;
 import org.slf4j.Logger;
@@ -26,6 +30,10 @@ public class HtmlAction {
     private TaskDAO taskDAO;
     @Autowired
     private ScalerService scalerService;
+    @Autowired
+    private CfgArticlesTypeDAO cfgArticlesTypeDAO;
+    @Autowired
+    private InfArticlesDAO infArticlesDAO;
 
     private static Logger logger = LoggerFactory.getLogger("DEFAULT-APPENDER");
 
@@ -54,6 +62,8 @@ public class HtmlAction {
     @RequestMapping(value = "normal_task_config")
     public ModelAndView NormalTaskConfig() {
         ModelAndView mv = new ModelAndView();
+        List<CfgArticlesTypeDO> cfgArticlesTypeDOList = cfgArticlesTypeDAO.findAllCfgArticlesType();
+        mv.addObject("artList",cfgArticlesTypeDOList);
         mv.setViewName("/taskconfig/normalTaskConfig");
         return mv;
     }
@@ -66,6 +76,8 @@ public class HtmlAction {
             taskDOList = taskDAO.findAllTasks();
             logger.info("task query success");
             mv.addObject("datasource", taskDOList);
+            List<CfgArticlesTypeDO> cfgArticlesTypeDOList = cfgArticlesTypeDAO.findAllCfgArticlesType();
+            mv.addObject("artList",cfgArticlesTypeDOList);
             mv.setViewName("/monitor/taskquery");
             return mv;
         } catch (Exception e) {
@@ -93,6 +105,38 @@ public class HtmlAction {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("/taskconfig/TimedTaskConfig");
         return mav;
+    }
+    @RequestMapping(value = "/articlemanager")
+    public ModelAndView articleManager(
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse,
+            HttpSession httpSession
+    ){
+        List<CfgArticlesTypeDO> cfgArticlesTypeDOList = cfgArticlesTypeDAO.findAllCfgArticlesType();
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("/article/articlemanager");
+        mav.addObject("artList",cfgArticlesTypeDOList);
+        return mav;
+    }
+    @RequestMapping(value = "/articleslist")
+    public ModelAndView articlesList(
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse,
+            HttpSession httpSession
+    ){
+        String artId = httpServletRequest.getParameter("artId");
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("/article/articleslist");
+
+        if(artId != null && !artId.equals("")){
+            List<InfArticlesDO> infArticlesDOList = infArticlesDAO.findArticlesContentByArticleTypeId(Integer.parseInt(artId));
+            mav.addObject("artList",infArticlesDOList);
+            return mav;
+        }else{
+            return mav;
+        }
+
     }
 //    @RequestMapping(value = "register")
 //    public ModelAndView RegisterPage(

@@ -10,6 +10,7 @@
         <result property="mgroup" column="mgroup"/>
         <result property="projectName" column="projectName"/>
         <result property="loopRunTimes" column="loopRunTimes"/>
+        <result property="articleType" column="articleType" />
     </resultMap>
 
     <delete id="deleteTaskByTaskId" parameterType="com.wulin.dal.task.entity.TaskDO">
@@ -53,6 +54,7 @@
 								          AND mgroup = #{mgroup}
 								          AND projectName = #{projectName}
 								          AND runTimes > 0)
+			ORDER BY RAND()
             LIMIT 1;
         ]]>
     </select>
@@ -69,8 +71,8 @@
         <selectKey resultType="java.lang.Long" keyProperty="id">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO task (status,taskContent,loopType,runTimes,mgroup,projectName,loopRunTimes)
-        VALUES (#{status},#{taskContent},#{loopType},#{runTimes},#{mgroup},#{projectName},#{loopRunTimes});
+        INSERT INTO task (status,taskContent,loopType,runTimes,mgroup,projectName,loopRunTimes,articleType)
+        VALUES (#{status},#{taskContent},#{loopType},#{runTimes},#{mgroup},#{projectName},#{loopRunTimes},#{articleType});
     </insert>
 
     <update id="updateTaskById" parameterType="com.wulin.dal.task.entity.TaskDO">
@@ -83,6 +85,7 @@
             <if test="mgroup!=null">mgroup=#{mgroup},</if>
             <if test="projectName!=null">projectName=#{projectName},</if>
             <if test="loopRunTimes!=null">loopRunTimes=#{loopRunTimes},</if>
+            <if test="articleType!=null">articleType=#{articleType},</if>
         </trim>
         WHERE id = #{id};
     </update>
@@ -97,6 +100,7 @@
             <if test="mgroup!=null">mgroup=#{mgroup},</if>
             <if test="projectName!=null">projectName=#{projectName},</if>
             <if test="loopRunTimes!=null">loopRunTimes=#{loopRunTimes},</if>
+            <if test="articleType!=null">articleType=#{articleType},</if>
         </trim>
         WHERE loopType = #{loopType};
     </update>

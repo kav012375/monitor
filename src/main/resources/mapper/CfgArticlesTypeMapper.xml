@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wulin.dal.cfgArticlesType.dao.CfgArticlesTypeDAO">
+    <resultMap id="CfgArticlesTypeMap" type="com.wulin.dal.cfgArticlesType.entity.CfgArticlesTypeDO">
+        <id property="id" column="ID" />
+        <result property="articleTypeName" column="articleTypeName"></result>
+    </resultMap>
+
+    <select id="findAllCfgArticlesType" resultMap="CfgArticlesTypeMap">
+        SELECT * FROM cfg_articles_type;
+    </select>
+
+    <select id="findArticleTypeById" resultMap="CfgArticlesTypeMap" parameterType="java.lang.Integer">
+        SELECT * FROM cfg_articles_type WHERE ID = #{id};
+    </select>
+
+    <select id="findArticleTypeByArticleTypeName" resultMap="CfgArticlesTypeMap" parameterType="java.lang.String">
+        SELECT * FROM cfg_articles_type WHERE articleTypeName = #{articleTypeName};
+    </select>
+
+    <insert id="insertNewArticleType" parameterType="com.wulin.dal.cfgArticlesType.entity.CfgArticlesTypeDO" useGeneratedKeys="true">
+        INSERT INTO cfg_articles_type (articleTypeName) VALUES (#{articleTypeName});
+    </insert>
+
+    <delete id="deleteArticleTypeById" parameterType="java.lang.Integer">
+        DELETE FROM cfg_articles_type WHERE ID = #{id};
+    </delete>
+
+    <delete id="deleteArticleTypeByArticleTypeName" parameterType="java.lang.String">
+        DELETE FROM cfg_articles_type WHERE articleTypeName = #{articleTypeName};
+    </delete>
+
+    <update id="updateArticleTypeNameById" parameterType="com.wulin.dal.cfgArticlesType.entity.CfgArticlesTypeDO">
+        UPDATE cfg_articles_type SET articleTypeName = #{articleTypeName} WHERE ID = #{id};
+    </update>
+
+</mapper>

@@ -145,6 +145,15 @@
                                     <label>循环次数</label></label>
                                     <input class="form-control" id="selectLoopTimes"/>
                                 </div>
+                                <div class="form-group">
+                                    <label>评论类型</label>
+                                    <select id="articleTypeSelect" class="form-control">
+                                        <option value="null" selected = selected>无须评论</option>
+                                        #foreach(${art} in ${artList})
+                                            <option value="${art.id}">${art.articleTypeName}</option>
+                                        #end
+                                    </select>
+                                </div>
                             </form>
                         </div>
                         <div class="col-lg-6">
@@ -191,6 +200,7 @@
         var loopTimes = $("#selectLoopTimes").val();
         var actions = $("#mTaskAction").val();
         var positions = $("#mTaskPosition").val();
+        var artType = $("#articleTypeSelect").val();
 
         if (id == "" || status == "" || mgroup == "" || projectName == "" || loopTimes == "") {
             $.confirm({
@@ -208,7 +218,15 @@
 
 
         $.post("/task/modifytask",
-                {taskid: id, status: status, mgroup: mgroup, projectname: projectName, looptimes: loopTimes,actions:actions,positions:positions},
+                {
+                    taskid: id,
+                    status: status,
+                    mgroup: mgroup,
+                    projectname: projectName,
+                    looptimes: loopTimes,
+                    actions:actions,
+                    positions:positions,
+                    artType:artType},
                 function (data) {
                     if(data == "更新成功！"){
                         $.confirm({

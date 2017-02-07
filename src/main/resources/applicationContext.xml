@@ -92,6 +92,14 @@
         <property name="mapperInterface" value="com.wulin.dal.interfaceRequestLog.dao.InterfaceRequestLogDAO"></property>
         <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
     </bean>
+    <bean id="CfgArticlesTypeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.wulin.dal.cfgArticlesType.dao.CfgArticlesTypeDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+    <bean id="InfArticleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.wulin.dal.infArticles.dao.InfArticlesDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory" />
     </bean>
@@ -102,7 +110,7 @@
     </bean>
 
     <!--配置mvc,防止冲突-->
-    <context:component-scan base-package="com.wulin.web.controller">
+    <context:component-scan base-package="com.wulin.web">
         <context:exclude-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>
         <context:exclude-filter type="annotation"

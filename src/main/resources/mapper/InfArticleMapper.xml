@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wulin.dal.infArticles.dao.InfArticlesDAO">
+    <resultMap id="InfArticlesMap" type="com.wulin.dal.infArticles.entity.InfArticlesDO">
+        <id property="id" column="ID" />
+        <result property="articleTypeId" column="articleTypeId"></result>
+        <result property="articleContent" column="articleContent"></result>
+    </resultMap>
+
+    <select id="findArticlesContentByArticleTypeId" resultMap="InfArticlesMap" parameterType="java.lang.Integer">
+        SELECT * FROM inf_articles WHERE articleTypeId = #{articleTypeId};
+    </select>
+
+    <update id="updateArticlesContentById" parameterType="com.wulin.dal.infArticles.entity.InfArticlesDO">
+        UPDATE inf_articles SET articleContent = #{articleContent} WHERE ID = #{id};
+    </update>
+
+    <delete id="deleteArticlesById" parameterType="java.lang.Long">
+        DELETE FROM inf_articles WHERE ID = #{id};
+    </delete>
+
+    <delete id="deleteArticlesByArticleTypeId" parameterType="java.lang.Integer">
+        DELETE FROM inf_articles WHERE articleTypeId = #{articleTypeId};
+    </delete>
+
+    <insert id="insertNewArticlesContentByArticleTypeId" parameterType="com.wulin.dal.infArticles.entity.InfArticlesDO"
+            useGeneratedKeys="true">
+        INSERT INTO inf_articles (articleTypeId,articleContent) VALUES (#{articleTypeId},#{articleContent});
+    </insert>
+</mapper>
