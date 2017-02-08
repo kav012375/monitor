@@ -42,8 +42,10 @@ public class HtmlAction {
         ModelAndView mv = new ModelAndView();
         Long Times = scalerService.getRequestTimesByDay();
         Long runningTasks = taskDAO.countRuningTaskAmount();
+        Long sumRunTimes = taskDAO.getAllSumRunTimes();
         mv.addObject("reqTimes",Times);
         mv.addObject("runningTasks",runningTasks);
+        mv.addObject("sumRunTimes",sumRunTimes);
         mv.setViewName("index");
         return mv;
     }

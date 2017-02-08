@@ -115,6 +115,7 @@ public class TaskAction {
         String actions = httpServletRequest.getParameter("actions");
         String positions = httpServletRequest.getParameter("positions");
         String artType = httpServletRequest.getParameter("artType");
+        String ipFilterType = httpServletRequest.getParameter("ipFilter");
         if (actions == null||actions.equals("")||positions==null||positions.equals("")){
             httpServletResponse.setCharacterEncoding("utf-8");
             httpServletResponse.getWriter().print("位置或动作为空！");
@@ -127,6 +128,11 @@ public class TaskAction {
         taskDO.setMgroup(mgroup);
         taskDO.setProjectName(projectName);
         taskDO.setArticleType(artType);
+        if(ipFilterType.equals("false")){
+            taskDO.setIpFilter(false);
+        }else{
+            taskDO.setIpFilter(true);
+        }
         //获取当前任务的content
         TaskDO oldTaskDO = taskDAO.findTaskById(taskId);
 

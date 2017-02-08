@@ -87,6 +87,8 @@ public class DataAction {
                 httpServletRequest.getParameter("loopruntimes") !=null ? httpServletRequest.getParameter("loopruntimes") : "default";
         String artType =
                 httpServletRequest.getParameter("artType") !=null ? httpServletRequest.getParameter("artType") : "null";
+        String ipFilterType =
+                httpServletRequest.getParameter("ipFilter") !=null ? httpServletRequest.getParameter("ipFilter") : "true";
 
         try {
             if(     mediaName.equals("default")  ||
@@ -145,6 +147,11 @@ public class DataAction {
             taskDO.setMgroup(mgroup);
             taskDO.setProjectName(projectName);
             taskDO.setArticleType(artType);
+            if(ipFilterType.equals("false")){
+                taskDO.setIpFilter(false);
+            }else{
+                taskDO.setIpFilter(true);
+            }
             if (loopType.equals("2")){
                 taskDO.setLoopType(2);
             }else{

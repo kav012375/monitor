@@ -16,12 +16,14 @@ public class TaskDO implements Serializable {
     private String projectName;
     private int loopRunTimes;
     private String articleType;
+    private boolean ipFilter;
 
     public TaskDO(){
         this.setLoopType(100);
         this.setRunTimes(-1);
         this.setStatus(-1);
         this.setArticleType("null");
+        this.setIpFilter(true);
     }
 
     public static long getSerialVersionUID() {
@@ -98,5 +100,13 @@ public class TaskDO implements Serializable {
 
     public void setArticleType(String articleType) {
         this.articleType = articleType;
+    }
+
+    public boolean isIpFilter() {
+        return ipFilter;
+    }
+
+    public void setIpFilter(boolean ipFilter) {
+        this.ipFilter = ipFilter;
     }
 }

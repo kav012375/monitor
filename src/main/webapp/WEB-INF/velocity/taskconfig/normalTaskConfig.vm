@@ -44,6 +44,13 @@
                                     #end
                                 </select>
                             </div>
+                            <div class="form-group input-group col-lg-12">
+                                <label>是否需要过滤ip</label>
+                                <select id="ipFilterType" class="form-control">
+                                    <option value="true" selected = selected>需要过滤</option>
+                                    <option value="false">无须过滤</option>
+                                </select>
+                            </div>
                         </form>
                     </div>
                     <div class="col-lg-1"></div>
@@ -148,6 +155,7 @@
         var projectName = $("#projectName").val();
         var loopType = $("#loopTypeSelect").val();
         var artType = $("#ArticleTypeSelect").val();
+        var ipFilterType = $("#ipFilterType").val();
         if(mediaName == ""||username==""||password==""||positions==""||actions==""||runtimes==""||mgroup==""||projectName==""){
             $("#myModalLabel").html("参数错误");
             $("#myModalContent").html("参数不完整，请检查参数完整性");
@@ -166,7 +174,8 @@
                     mgroup:mgroup,
                     projectName:projectName,
                     looptype:loopType,
-                    artType:artType
+                    artType:artType,
+                    ipFilter:ipFilterType
                 },function (data) {
                     $("#btnConfirmToUploadTask").button('reset');
                     $("#myModalLabel").html("处理结果");

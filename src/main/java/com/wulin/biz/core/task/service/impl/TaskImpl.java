@@ -76,16 +76,7 @@ public class TaskImpl implements TaskService {
             taskDO.setProjectName(projectName);
             taskDO.setMgroup(mgroup);
             taskDO.setStatus(0);
-            //检查请求的ip是否重复
-            InterfaceRequestLogQueryDTO interfaceRequestLogQueryDTO =
-                    ScalerUtils.assembleInterfaceRequestLogQyueryUtil(taskDO,ipAddress);
-            boolean checResult = scalerService.checkDuplicateIp(interfaceRequestLogQueryDTO);
-            if (!checResult) {
-                //发现重复IP过滤掉
-                httpServletResponse.setCharacterEncoding("utf-8");
-                httpServletResponse.getWriter().println("重复的请求IP，被过滤");
-                return;
-            }
+
             //获取未完成的任务
             List<TaskDO> taskDOs = taskDAO.findVailedTaskByStatusAndGroupAndProjectAndRuntimes(taskDO);
             if (taskDOs.size() < 1) {
@@ -100,7 +91,20 @@ public class TaskImpl implements TaskService {
             int randomIndex = random.nextInt(iszie);
             logger.debug("current random index = " + randomIndex);
             taskDO = taskDOs.get(randomIndex);
-            //获取到任务之后，将任务次数减1
+            //判断该任务是否需要过滤ip
+            if(taskDO.isIpFilter()){
+                //检查请求的ip是否重复
+                InterfaceRequestLogQueryDTO interfaceRequestLogQueryDTO =
+                        ScalerUtils.assembleInterfaceRequestLogQyueryUtil(taskDO,ipAddress);
+                boolean checResult = scalerService.checkDuplicateIp(interfaceRequestLogQueryDTO);
+                if (!checResult) {
+                    //发现重复IP过滤掉
+                    httpServletResponse.setCharacterEncoding("utf-8");
+                    httpServletResponse.getWriter().println("重复的请求IP，被过滤");
+                    return;
+                }
+            }
+            //获取到任务并且ip检查通过之后，将任务次数减1
             taskDO.setRunTimes(taskDO.getRunTimes() - 1);
             if (taskDO.getRunTimes() == 0) {
                 taskDO.setStatus(StatusEnum.RunFinish.getCode());

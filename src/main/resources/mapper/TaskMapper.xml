@@ -11,6 +11,7 @@
         <result property="projectName" column="projectName"/>
         <result property="loopRunTimes" column="loopRunTimes"/>
         <result property="articleType" column="articleType" />
+        <result property="ipFilter" column="ipfilter" />
     </resultMap>
 
     <delete id="deleteTaskByTaskId" parameterType="com.wulin.dal.task.entity.TaskDO">
@@ -67,12 +68,16 @@
         SELECT * FROM task WHERE loopType = #{loopType};
     </select>
 
+    <select id="getAllSumRunTimes" resultType="java.lang.Long">
+        SELECT SUM(runTimes) FROM task;
+    </select>
+
     <insert id="insertTask" parameterType="com.wulin.dal.task.entity.TaskDO" useGeneratedKeys="true" keyProperty="id">
         <selectKey resultType="java.lang.Long" keyProperty="id">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO task (status,taskContent,loopType,runTimes,mgroup,projectName,loopRunTimes,articleType)
-        VALUES (#{status},#{taskContent},#{loopType},#{runTimes},#{mgroup},#{projectName},#{loopRunTimes},#{articleType});
+        INSERT INTO task (status,taskContent,loopType,runTimes,mgroup,projectName,loopRunTimes,articleType,ipfilter)
+        VALUES (#{status},#{taskContent},#{loopType},#{runTimes},#{mgroup},#{projectName},#{loopRunTimes},#{articleType},#{ipFilter});
     </insert>
 
     <update id="updateTaskById" parameterType="com.wulin.dal.task.entity.TaskDO">
@@ -86,6 +91,7 @@
             <if test="projectName!=null">projectName=#{projectName},</if>
             <if test="loopRunTimes!=null">loopRunTimes=#{loopRunTimes},</if>
             <if test="articleType!=null">articleType=#{articleType},</if>
+            <if test="ipFilter!=null">ipfilter=#{ipFilter},</if>
         </trim>
         WHERE id = #{id};
     </update>
@@ -101,6 +107,7 @@
             <if test="projectName!=null">projectName=#{projectName},</if>
             <if test="loopRunTimes!=null">loopRunTimes=#{loopRunTimes},</if>
             <if test="articleType!=null">articleType=#{articleType},</if>
+            <if test="ipFilter!=null">ipfilter=#{ipFilter},</if>
         </trim>
         WHERE loopType = #{loopType};
     </update>

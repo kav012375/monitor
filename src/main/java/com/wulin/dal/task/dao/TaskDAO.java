@@ -19,4 +19,5 @@ public interface TaskDAO {
     List<TaskDO> findTaskByLoopType(TaskDO taskDO);
     int deleteTaskByTaskId(TaskDO taskDO);
     Long countRuningTaskAmount();
+    Long getAllSumRunTimes();
 }
