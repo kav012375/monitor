@@ -56,9 +56,10 @@ public class TaskImpl implements TaskService {
                               HttpServletResponse httpServletResponse,
                               HttpSession httpSession,
                               final String ipAddress) throws Throwable {
+        TaskDO taskDO = new TaskDO();
+        TaskInstanceDO taskInstanceDO = new TaskInstanceDO();
+        List<TaskDO> taskDOs = new ArrayList<TaskDO>();
         try {
-            TaskDO taskDO = new TaskDO();
-            TaskInstanceDO taskInstanceDO = new TaskInstanceDO();
             httpServletRequest.setCharacterEncoding("utf-8");
             //获取请求
             String requestJson = httpServletRequest.getParameter("request");
@@ -78,7 +79,7 @@ public class TaskImpl implements TaskService {
             taskDO.setStatus(0);
 
             //获取未完成的任务
-            List<TaskDO> taskDOs = taskDAO.findVailedTaskByStatusAndGroupAndProjectAndRuntimes(taskDO);
+            taskDOs = taskDAO.findVailedTaskByStatusAndGroupAndProjectAndRuntimes(taskDO);
             if (taskDOs.size() < 1) {
                 httpServletResponse.setCharacterEncoding("utf-8");
                 httpServletResponse.getWriter().println("无任务可以领用");
@@ -182,6 +183,10 @@ public class TaskImpl implements TaskService {
             e.printStackTrace();
             httpServletResponse.setCharacterEncoding("utf-8");
             httpServletResponse.getWriter().println("系统异常，异常原因：" + e.getMessage());
+        }finally {
+            //销毁大数据
+            taskDOs.clear();
+            taskDOs = null;
         }
     }
 }

@@ -38,25 +38,7 @@
             WHERE status = #{status}
             AND mgroup = #{mgroup}
             AND projectName = #{projectName}
-            AND runTimes > 0
-            AND id >= (
-    	        (SELECT MAX(id) FROM task WHERE status = #{status}
-									      AND mgroup = #{mgroup}
-									      AND projectName = #{projectName}
-									      AND runTimes > 0)
-    	        -
-    	        (SELECT MIN(id) FROM task WHERE status = #{status}
-									      AND mgroup = #{mgroup}
-									      AND projectName = #{projectName}
-									      AND runTimes > 0)
-	            ) * RAND()
-	            +
-	            (SELECT MIN(id) FROM task WHERE status = #{status}
-								          AND mgroup = #{mgroup}
-								          AND projectName = #{projectName}
-								          AND runTimes > 0)
-			ORDER BY RAND()
-            LIMIT 1;
+            AND runTimes > 0;
         ]]>
     </select>
 
