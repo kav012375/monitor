@@ -10,4 +10,5 @@ public interface InterfaceRequestLogDAO {
     int insertInterfaceRequestLog(InterfaceRequestLogDO interfaceRequestLogDO);
     Long countRequestTimesByDay(InterfaceRequestLogQueryDTO interfaceRequestLogQueryDTO);
     int checkDuplicateIp(InterfaceRequestLogQueryDTO interfaceRequestLogQueryDTO);
+    int deleteInterfaceLogByDateTime(String daytime);
 }

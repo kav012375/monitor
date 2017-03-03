@@ -9,11 +9,11 @@
         <result property="batchId" column="batchId" />
     </resultMap>
 
-    <insert id="insertUserPwdConfig" parameterType="UserPwdConfigMapper" useGeneratedKeys="true">
+    <insert id="insertUserPwdConfig" parameterType="com.wulin.dal.userPwdConfig.entity.UserPwdConfigDO" useGeneratedKeys="true">
         INSERT INTO user_pwd_config (account,pwd,project,batchId) VALUES (#{account},#{pwd},#{project},#{batchId});
     </insert>
 
-    <select id="findRandomUserPwdByProject" parameterType="java.lang.String" resultType="UserPwdConfigMapper">
+    <select id="findRandomUserPwdByProject" parameterType="java.lang.String" resultType="com.wulin.dal.userPwdConfig.entity.UserPwdConfigDO">
         SELECT *
         FROM user_pwd_config AS t1
         JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM user_pwd_config)-(SELECT MIN(id) FROM user_pwd_config))+(SELECT MIN(id) FROM user_pwd_config)) AS id) AS t2

@@ -10,6 +10,15 @@
             <param name="LevelMax" value="ERROR" />
             <param name="LevelMin" value="DEBUG" />
         </filter>
+        <!--限制mybatis输出日志-->
+        <filter class="org.mybatis.spring">
+            <param name="LevelMax" value="ERROR" />
+            <param name="LevelMin" value="ERROR" />
+        </filter>
+        <filter class="org.apache.ibatis.logging">
+            <param name="LevelMax" value="ERROR" />
+            <param name="LevelMin" value="ERROR" />
+        </filter>
     </appender>
     <!-- [公共Appender] -->
     <appender name="DEFAULT-APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
@@ -36,5 +45,9 @@
     <category name="org.apache.ibatis">
         <priority value="error"/>
         <appender-ref ref="DEFAULT-APPENDER"/>
+    </category>
+    <category name="org.mybatis.spring">
+        <priority value="error"></priority>
+        <appender-ref ref="DEFAULT-APPENDER"></appender-ref>
     </category>
 </log4j:configuration>

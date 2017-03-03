@@ -11,12 +11,14 @@
     <bean id="refreshTask" class="com.wulin.biz.timedTask.RefreshTask"></bean>
     <bean id="reportTask" class="com.wulin.biz.timedTask.ReportTask"></bean>
     <bean id="resetReqTimes" class="com.wulin.biz.timedTask.ResetTimes"></bean>
+    <bean id="dataCleanTask" class="com.wulin.biz.timedTask.DataCleanTask"></bean>
 
     <task:scheduler id="myScheduler" pool-size="1000"></task:scheduler>
     <task:scheduled-tasks scheduler="myScheduler">
         <task:scheduled ref="refreshTask" method="refreshDailyLoopTask" cron="0 30 0 * * ?"/>
         <task:scheduled ref="reportTask" method="generateDailyReportTask" cron="00 50 23 * * ?"/>
         <task:scheduled ref="resetReqTimes" method="ResetReqTimes" cron="59 59 23 * * ?"/>
+        <task:scheduled ref="dataCleanTask" method="deleteInterfaceLog" cron="0 30 2 * * ?" />
     </task:scheduled-tasks>
 
     <!--<context:component-scan base-package="com.wulin.biz.timedTask"></context:component-scan>-->

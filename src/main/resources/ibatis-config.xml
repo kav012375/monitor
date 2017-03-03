@@ -6,7 +6,10 @@
     <!--<mappers>-->
         <!--<mapper resource="classpath:com/wulin/dal/mapper/UserMapper.xml"/>-->
     <!--</mappers>-->
-    <typeAliases>
-        <typeAlias alias="UserPwdConfigMapper" type="com.wulin.dal.userPwdConfig.entity.UserPwdConfigDO"/>
-    </typeAliases>
+    <!--<typeAliases>-->
+        <!--<typeAlias alias="UserPwdConfigMapper" type="com.wulin.dal.userPwdConfig.entity.UserPwdConfigDO"/>-->
+    <!--</typeAliases>-->
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
 </configuration>

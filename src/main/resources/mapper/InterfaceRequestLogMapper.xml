@@ -40,5 +40,11 @@
         AND request_time < #{endTime};
         ]]>
     </select>
+    
+    <delete id="deleteInterfaceLogByDateTime" parameterType="java.lang.String">
+         <![CDATA[
+            DELETE FROM interface_request_log WHERE request_time < #{daytime};
+        ]]>
+    </delete>
 
 </mapper>
