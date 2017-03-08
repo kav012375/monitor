@@ -71,7 +71,7 @@ public class TaskImpl implements TaskService {
             String accountType = jsonObject.getString("type");
             if (projectName == null || mgroup == null || ip == null || accessToken == null) {
                 httpServletResponse.setCharacterEncoding("utf-8");
-                httpServletResponse.getWriter().println("参数不完整");
+                httpServletResponse.getWriter().println("系统异常，参数不完整");
                 return;
             }
             taskDO.setProjectName(projectName);
@@ -82,7 +82,7 @@ public class TaskImpl implements TaskService {
             taskDOs = taskDAO.findVailedTaskByStatusAndGroupAndProjectAndRuntimes(taskDO);
             if (taskDOs.size() < 1) {
                 httpServletResponse.setCharacterEncoding("utf-8");
-                httpServletResponse.getWriter().println("无任务可以领用");
+                httpServletResponse.getWriter().println("系统异常，无任务可以领用");
                 return;
             }
             /**
@@ -117,6 +117,8 @@ public class TaskImpl implements TaskService {
             int taskUpdataNum = taskDAO.updateTaskById(taskDO);
             if (taskUpdataNum < 1) {
                 System.out.println("更新task表失败");
+                httpServletResponse.setCharacterEncoding("utf-8");
+                httpServletResponse.getWriter().println("系统异常");
                 return;
             }
             taskInstanceDO.setTaskId(taskDO.getId());
